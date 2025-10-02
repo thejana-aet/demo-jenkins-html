@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Demo App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .server-info {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .server-info h3 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .info-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 1.1em;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .features {
+            margin: 30px 0;
+        }
+
+        .features h3 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: grid;
+            gap: 15px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .feature-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            flex: 1;
+        }
+
+        .feature-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .feature-desc {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .timestamp {
+            color: #999;
+            font-size: 0.85em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 DevOps Demo Application</h1>
+            <p style="color: #666; margin-top: 10px;">Terraform + Jenkins + Load Balancer</p>
+            <span class="version-badge">Version 1.0.0</span>
+        </div>
+
+        <div class="server-info">
+            <h3>
+                <span class="status-indicator"></span>
+                Server Information
+            </h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Server</div>
+                    <div class="info-value" id="serverName">Loading...</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Load Balancer</div>
+                    <div class="info-value">Active</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Deployment</div>
+                    <div class="info-value">Jenkins CI/CD</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Infrastructure</div>
+                    <div class="info-value">Terraform</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <h3>✨ Project Features</h3>
+            <ul class="feature-list">
+                <li class="feature-item">
+                    <div class="feature-icon">1</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Infrastructure as Code</div>
+                        <div class="feature-desc">EC2 instances provisioned with Terraform</div>
+                    </div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-icon">2</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Automated Deployment</div>
+                        <div class="feature-desc">Jenkins pipeline for continuous deployment</div>
+                    </div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-icon">3</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Load Balancing</div>
+                        <div class="feature-desc">Traffic distributed across multiple instances</div>
+                    </div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-icon">4</div>
+                    <div class="feature-text">
+                        <div class="feature-title">High Availability</div>
+                        <div class="feature-desc">Redundant servers for zero downtime</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p><strong>Deployed via Jenkins Pipeline</strong></p>
+            <p class="timestamp" id="timestamp"></p>
+        </div>
+    </div>
+
+    <script>
+        // Display server hostname (will show EC2 instance info when deployed)
+        document.getElementById('serverName').textContent = window.location.hostname;
+        
+        // Display current timestamp
+        const now = new Date();
+        document.getElementById('timestamp').textContent = 
+            'Last updated: ' + now.toLocaleString();
+        
+        // Add subtle animation on load
+        setTimeout(() => {
+            document.querySelectorAll('.feature-item').forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.opacity = '0';
+                    item.style.opacity = '1';
+                }, index * 100);
+            });
+        }, 500);
+    </script>
+</body>
+</html>
