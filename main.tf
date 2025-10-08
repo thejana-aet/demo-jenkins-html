@@ -53,7 +53,7 @@ resource "aws_security_group" "jenkins_sg" {
 
 resource "aws_instance" "TR_Jenkins_EC2" {
   ami                    = data.aws_ami.ubuntu.id
-  instance_type          = "t2.micro"
+  instance_type          = "t3.medium"
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
   user_data              = base64encode(file("userdata1.sh"))
   key_name               = "test_rnd"
