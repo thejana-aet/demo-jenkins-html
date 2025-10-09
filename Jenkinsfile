@@ -2,10 +2,9 @@ pipeline {
     agent any
     
     environment {
-        EC2_INSTANCE = '13.222.171.149'
-        EC2_USER = 'ubuntu'
+        EC2_INSTANCE = '3.90.35.45'
         DEPLOY_PATH = '/var/www/html'
-        SSH_CREDENTIAL_ID = 'ec2-ssh-key'
+        SSH_CONFIG_NAME = 'jenkins'
     }
     
     stages {
@@ -29,13 +28,22 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 echo "Deploying to EC2 Instance: ${EC2_INSTANCE}"
-                sshagent(credentials: [SSH_CREDENTIAL_ID]) {
-                    sh """
-                        scp -o StrictHostKeyChecking=no index.html ${EC2_USER}@${EC2_INSTANCE}:${DEPLOY_PATH}/
-                        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_INSTANCE} 'sudo chown www-data:www-data ${DEPLOY_PATH}/index.html'
-                        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_INSTANCE} 'sudo systemctl reload apache2'
-                    """
-                }
+                sshPublisher(
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: "${SSH_CONFIG_NAME}",
+                            transfers: [
+                                sshTransfer(
+                                    sourceFiles: 'index.html',
+                                    removePrefix: '',
+                                    remoteDirectory: '/var/www/html/',
+                                    execCommand: 'sudo chown www-data:www-data /var/www/html/index.html && sudo systemctl reload apache2'
+                                )
+                            ],
+                            verbose: true
+                        )
+                    ]
+                )
                 echo 'Deployment completed!'
             }
         }
